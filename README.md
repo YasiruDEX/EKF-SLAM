@@ -1,0 +1,122 @@
+# Autonomous Exam Proctoring Robot
+
+This project implements an autonomous robot designed for exam proctoring simulations. It is built on ROS 2 Humble and generally utilizes Gazebo Fortress for simulation, SLAM Toolbox for mapping, and the Nav2 stack for autonomous navigation.
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage Guide](#usage-guide)
+  - [1. Simulation Startup](#1-simulation-startup)
+  - [2. SLAM (Simultaneous Localization and Mapping)](#2-slam-simultaneous-localization-and-mapping)
+  - [3. Navigation (Nav2)](#3-navigation-nav2)
+  - [4. Teleoperation](#4-teleoperation)
+- [Q&A and Troubleshooting](#qa-and-troubleshooting)
+
+## Prerequisites
+
+Ensure you have the following software installed on your system (Ubuntu 22.04 recommended):
+
+- **ROS 2 Humble Hawksbill**: Follow the official OSRF installation guide.
+- **Gazebo Fortress**: For simulation.
+- **ROS-Gazebo Bridge**: `ros-humble-ros-gz`
+- **Navigation 2**: `ros-humble-nav2-bringup`
+- **SLAM Toolbox**: `ros-humble-slam-toolbox`
+- **Xacro**: `ros-humble-xacro`
+
+You can install the primary dependencies using apt:
+
+```bash
+sudo apt update
+sudo apt install ros-humble-desktop ros-humble-nav2-bringup ros-humble-slam-toolbox \
+ros-humble-ros-gz ros-humble-xacro ros-humble-teleop-twist-keyboard
+```
+
+## Installation
+
+1.  **Clone the Repository**:
+    Navigate to your ROS 2 workspace `src` directory and clone this repository.
+
+    ```bash
+    cd ~/ros2_ws/src
+    git clone <repository_url> autonomous_exam_proctoring_robot
+    ```
+
+2.  **Build the Workspace**:
+    Return to the root of your workspace and build using colcon.
+
+    ```bash
+    cd ~/ros2_ws
+    colcon build --symlink-install
+    ```
+
+3.  **Source the Workspace**:
+    Source the setup script to add the new packages to your environment path.
+
+    ```bash
+    source install/setup.bash
+    ```
+
+## Usage Guide
+
+To run the full simulation stack, you will typically need three separate terminal windows. Ensure you source the workspace in each terminal (`source install/setup.bash`).
+
+### 1. Simulation Startup
+
+This launch file starts Gazebo, spawns the robot in the classroom environment, publishing robot states and TFs, and opens RViz for visualization.
+
+```bash
+ros2 launch robot_bringup sim_bringup.launch.py
+```
+
+### 2. SLAM (Simultaneous Localization and Mapping)
+
+Once the simulation is running, verify the robot is visible in RViz. Then, start the SLAM Toolbox to begin mapping the environment. This simulation is configured to use simulation time.
+
+```bash
+ros2 launch robot_slam slam.launch.py
+```
+
+### 3. Navigation (Nav2)
+
+After SLAM is running (or if you are using a saved map), launch the Navigation stack. This enables the robot to plan paths and move autonomously to goal poses set in RViz.
+
+```bash
+ros2 launch robot_nav navigation.launch.py
+```
+
+**To operate:**
+1.  In RViz, verify the map is visible.
+2.  Use the "2D Goal Pose" tool in the RViz toolbar.
+3.  Click and drag on the map to set a destination and orientation.
+4.  The robot should plan a path and move towards the goal.
+
+### 4. Teleoperation
+
+To manually control the robot (useful for building the initial map), use the teleop node.
+
+```bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
+
+Follow the on-screen instructions (use keys `i`, `j`, `k`, `l` to move).
+
+## Q&A and Troubleshooting
+
+**Q: Why do I see "TF_OLD_DATA" warnings in the terminal?**
+A: This usually occurs when there is a mismatch between the simulation time and the system time. We have configured the launch files (specifically `sim_bringup.launch.py`) to properly set `use_sim_time` for all nodes, including the static transform publisher. If you see this, ensure you have sourced separate terminals correctly and that Gazebo is not paused.
+
+**Q: The robot is not moving in RViz, or the odometry seems wrong.**
+A: Ensure that the robot description is correct. We have verified the wheel separation and wheel radius in the URDF macro. If the robot rotates too much or too little, these physical parameters in `AEP_Robot_macro.urdf.xacro` may need fine-tuning.
+
+**Q: I cannot see the Costmaps (Global/Local) in RViz.**
+A: This is often a Quality of Service (QoS) mismatch. The Nav2 stack uses specific QoS settings. We have configured the RViz display to use "Reliable" reliability and "Transient Local" durability for the map topics to match the publishers. If they are missing, try resetting the RViz display config or restarting the simulation bringup.
+
+**Q: The navigation goal fails or the robot spins.**
+A: This can happen if the robot is stuck or if the costmap is not updating. Check the `/scan` topic to ensure laser data is being received. Also, ensure the behavior tree XML paths in `nav2_params.yaml` are either empty (to use defaults) or pointing to valid files.
+
+**Q: How do I save the map generated by SLAM?**
+A: You can use the map saver CLI tool provided by Nav2:
+```bash
+ros2 run nav2_map_server map_saver_cli -f my_map_name
+```
