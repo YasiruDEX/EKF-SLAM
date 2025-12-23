@@ -219,7 +219,7 @@ class EKFSlamNode(Node):
         self.update_map_to_odom_transform(state, odom_x, odom_y, odom_theta)
         
         # Publish TF immediately (don't rely on timer with sim time)
-        self.publish_tf()
+        self.publish_tf(msg.header.stamp)
     
     def scan_callback(self, msg: LaserScan):
         """Process laser scan for mapping and optional scan matching."""
@@ -295,10 +295,13 @@ class EKFSlamNode(Node):
         self.map_to_odom_x = map_x - (cos_diff * odom_x - sin_diff * odom_y)
         self.map_to_odom_y = map_y - (sin_diff * odom_x + cos_diff * odom_y)
     
-    def publish_tf(self):
+    def publish_tf(self, timestamp=None):
         """Publish map -> odom transform."""
         t = TransformStamped()
-        t.header.stamp = self.get_clock().now().to_msg()
+        if timestamp is not None:
+            t.header.stamp = timestamp
+        else:
+            t.header.stamp = self.get_clock().now().to_msg()
         t.header.frame_id = self.map_frame
         t.child_frame_id = self.odom_frame
         
