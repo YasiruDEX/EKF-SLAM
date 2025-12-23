@@ -131,13 +131,13 @@ Visualization Manager:
       Enabled: true
       Name: GlobalCostmap
       Topic:
-        Depth: 5
-        Durability Policy: Transient Local
+        Depth: 1
+        Durability Policy: Volatile
         History Policy: Keep Last
-        Reliability Policy: Reliable
+        Reliability Policy: Best Effort
         Value: /global_costmap/costmap
       Update Topic:
-        Depth: 5
+        Depth: 1
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Best Effort
@@ -152,13 +152,13 @@ Visualization Manager:
       Enabled: true
       Name: LocalCostmap
       Topic:
-        Depth: 5
-        Durability Policy: Transient Local
+        Depth: 1
+        Durability Policy: Volatile
         History Policy: Keep Last
-        Reliability Policy: Reliable
+        Reliability Policy: Best Effort
         Value: /local_costmap/costmap
       Update Topic:
-        Depth: 5
+        Depth: 1
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Best Effort
