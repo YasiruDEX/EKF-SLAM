@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Launch file for the custom EKF-SLAM node.
+"""
 
 import os
 from launch import LaunchDescription
@@ -17,18 +20,18 @@ def generate_launch_description():
         description='Use simulation time if true'
     )
 
-    # Get SLAM params file path
+    # Get EKF-SLAM params file path
     slam_params_file = os.path.join(
         get_package_share_directory('robot_slam'),
         'config',
-        'slam_params.yaml'
+        'ekf_slam_params.yaml'
     )
 
-    # SLAM Toolbox Node (async mode)
-    slam_toolbox_node = Node(
-        package='slam_toolbox',
-        executable='async_slam_toolbox_node',
-        name='slam_toolbox',
+    # EKF-SLAM Node
+    ekf_slam_node = Node(
+        package='robot_slam',
+        executable='ekf_slam_node',
+        name='ekf_slam_node',
         output='screen',
         parameters=[
             slam_params_file,
@@ -38,5 +41,5 @@ def generate_launch_description():
 
     return LaunchDescription([
         use_sim_time_arg,
-        slam_toolbox_node,
+        ekf_slam_node,
     ])

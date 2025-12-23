@@ -22,18 +22,17 @@ def generate_launch_description():
     # --- Paths ---
     desc_share = get_package_share_directory('robot_description')
     sim_share = get_package_share_directory('robot_sim')
+    slam_share = get_package_share_directory('robot_slam')
     ros_gz_sim_share = get_package_share_directory('ros_gz_sim')
 
     urdf_xacro_path = os.path.join(desc_share, 'urdf', 'main.urdf.xacro')
     world_path = os.path.join(sim_share, 'worlds', 'classroom.sdf')
     rviz_config = os.path.join(desc_share, 'config', 'rviz', 'nav.rviz')
+    slam_params_file = os.path.join(slam_share, 'config', 'ekf_slam_params.yaml')
 
     # --- Set Gazebo resource path for mesh loading ---
-    # Get parent directory of robot_description share to use as model path
-    # This allows Gazebo to resolve package://robot_description/meshes/...
     gz_resource_path = os.path.dirname(desc_share)
     
-    # Also get current GZ_SIM_RESOURCE_PATH if it exists
     existing_gz_path = os.environ.get('GZ_SIM_RESOURCE_PATH', '')
     if existing_gz_path:
         gz_resource_path = f"{gz_resource_path}:{existing_gz_path}"
@@ -119,6 +118,18 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}]
     )
 
+    # --- Custom EKF-SLAM Node ---
+    ekf_slam_node = Node(
+        package='robot_slam',
+        executable='ekf_slam_node.py',
+        name='ekf_slam_node',
+        output='screen',
+        parameters=[
+            slam_params_file,
+            {'use_sim_time': use_sim_time}
+        ],
+    )
+
     # --- RViz2 ---
     rviz_node = Node(
         package='rviz2',
@@ -137,6 +148,6 @@ def generate_launch_description():
         static_tf_node,
         spawn_robot_node,
         bridge_node,
+        ekf_slam_node,
         rviz_node,
     ])
-

@@ -3,7 +3,7 @@
 <package format="3">
   <name>robot_bringup</name>
   <version>0.0.0</version>
-  <description>Top-level bringup: RViz, Gazebo, EKF, SLAM, Nav2</description>
+  <description>Top-level bringup: RViz, Gazebo, Custom EKF-SLAM</description>
   <maintainer email="kimpdroids@gmail.com">KIMP_Droids</maintainer>
   <license>Apache-2.0</license>
 
@@ -11,11 +11,7 @@
 
   <depend>robot_description</depend>
   <depend>robot_sim</depend>
-  <depend>robot_nav</depend>
   <depend>robot_slam</depend>
-  <depend>robot_localization</depend>
-  <depend>nav2_bringup</depend>
-  <depend>slam_toolbox</depend>
   <depend>rviz2</depend>
   <depend>tf2_ros</depend>
   <depend>geometry_msgs</depend>

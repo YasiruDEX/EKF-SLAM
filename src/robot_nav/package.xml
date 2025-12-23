@@ -3,18 +3,12 @@
 <package format="3">
   <name>robot_nav</name>
   <version>0.0.0</version>
-  <description>Navigation (Nav2) configs and launch</description>
+  <description>Navigation package (placeholder for future implementation)</description>
   <maintainer email="kimpdroids@gmail.com">KIMP_Droids</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>nav2_bringup</depend>
-  <depend>nav2_costmap_2d</depend>
-  <depend>nav2_planner</depend>
-  <depend>nav2_controller</depend>
-  <depend>nav2_bt_navigator</depend>
-  <depend>nav2_behaviours</depend>
   <depend>nav_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>tf2_ros</depend>
