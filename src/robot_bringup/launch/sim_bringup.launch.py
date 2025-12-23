@@ -26,7 +26,7 @@ def generate_launch_description():
     ros_gz_sim_share = get_package_share_directory('ros_gz_sim')
 
     urdf_xacro_path = os.path.join(desc_share, 'urdf', 'main.urdf.xacro')
-    world_path = os.path.join(sim_share, 'worlds', 'classroom.sdf')
+    world_path = os.path.join(sim_share, 'worlds', 'simple_test.sdf')
     rviz_config = os.path.join(desc_share, 'config', 'rviz', 'nav.rviz')
     slam_params_file = os.path.join(slam_share, 'config', 'ekf_slam_params.yaml')
 
@@ -91,7 +91,7 @@ def generate_launch_description():
         name='spawn_AEP_Robot',
         output='screen',
         arguments=[
-            '-world', 'classroom_world',
+            '-world', 'simple_test_world',
             '-topic', 'robot_description',
             '-name', 'AEP_Robot',
             '-x', '0.0',

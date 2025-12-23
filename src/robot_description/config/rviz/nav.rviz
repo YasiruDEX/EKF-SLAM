@@ -125,7 +125,7 @@ Visualization Manager:
 
     - Class: rviz_default_plugins/TF
       Enabled: true
-      Frame Timeout: 15
+      Frame Timeout: 1000
       Frames:
         All Enabled: true
       Marker Scale: 0.3
