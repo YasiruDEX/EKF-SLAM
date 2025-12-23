@@ -307,7 +307,7 @@
         <left_joint>${prefix}left_wheel_joint</left_joint>
         <right_joint>${prefix}right_wheel_joint</right_joint>
         <wheel_separation>0.5897</wheel_separation>
-        <wheel_radius>0.10</wheel_radius>
+        <wheel_radius>0.075</wheel_radius>
         <max_wheel_torque>20.0</max_wheel_torque>
         <max_wheel_acceleration>1.0</max_wheel_acceleration>
         <odom_publish_frequency>50</odom_publish_frequency>
@@ -316,6 +316,13 @@
         <tf_topic>tf</tf_topic>
         <frame_id>odom</frame_id>
         <child_frame_id>${prefix}base_link</child_frame_id>
+      </plugin>
+    </gazebo>
+
+    <!-- Sensors System Plugin (required for GPU lidar) -->
+    <gazebo>
+      <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+        <render_engine>ogre2</render_engine>
       </plugin>
     </gazebo>
 
@@ -338,6 +345,7 @@
         <pose>0 0 0 0 0 0</pose>
         <topic>scan</topic>
         <update_rate>10</update_rate>
+        <gz_frame_id>${prefix}lidar_link</gz_frame_id>
         <lidar>
           <scan>
             <horizontal>
