@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+  <!-- Define mesh path - use file:// for Gazebo compatibility -->
+  <xacro:property name="mesh_path" value="file://$(find robot_description)/meshes"/>
 
   <xacro:macro name="AEP_Robot" params="prefix:=">
 
@@ -20,7 +22,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/base_link.STL" />
+          <mesh filename="${mesh_path}/base_link.STL" />
         </geometry>
         <material name="">
           <color rgba="0.5 0.5 0.5 1" />
@@ -29,7 +31,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/base_link.STL" />
+          <mesh filename="${mesh_path}/base_link.STL" />
         </geometry>
       </collision>
     </link>
@@ -50,7 +52,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/lidar_link.STL" />
+          <mesh filename="${mesh_path}/lidar_link.STL" />
         </geometry>
         <material name="">
           <color rgba="0.2 0.7 1 1" />
@@ -59,7 +61,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/lidar_link.STL" />
+          <mesh filename="${mesh_path}/lidar_link.STL" />
         </geometry>
       </collision>
     </link>
@@ -87,7 +89,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/left_wheel_link.STL" />
+          <mesh filename="${mesh_path}/left_wheel_link.STL" />
         </geometry>
         <material name="">
           <color rgba="0.7 0.1 0.8 1" />
@@ -96,7 +98,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/left_wheel_link.STL" />
+          <mesh filename="${mesh_path}/left_wheel_link.STL" />
         </geometry>
       </collision>
     </link>
@@ -106,7 +108,7 @@
       <parent link="${prefix}base_link" />
       <child  link="${prefix}left_wheel_link" />
       <axis xyz="0 1 0" />
-      <limit lower="0" upper="0" effort="0" velocity="0" />
+      <limit effort="20.0" velocity="10.0" />
     </joint>
 
     <!-- right wheel -->
@@ -125,7 +127,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/right_wheel_link.STL" />
+          <mesh filename="${mesh_path}/right_wheel_link.STL" />
         </geometry>
         <material name="">
           <color rgba="0.7 0.1 0.8 1" />
@@ -134,7 +136,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/right_wheel_link.STL" />
+          <mesh filename="${mesh_path}/right_wheel_link.STL" />
         </geometry>
       </collision>
     </link>
@@ -144,7 +146,7 @@
       <parent link="${prefix}base_link" />
       <child  link="${prefix}right_wheel_link" />
       <axis xyz="0 1 0" />
-      <limit lower="0" upper="0" effort="0" velocity="0" />
+      <limit effort="20.0" velocity="10.0" />
     </joint>
 
     <!-- front caster -->
@@ -163,7 +165,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/front_castor_body_link.STL" />
+          <mesh filename="${mesh_path}/front_castor_body_link.STL" />
         </geometry>
         <material name="">
           <color rgba="0.4 0.4 0.4 1" />
@@ -172,7 +174,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/front_castor_body_link.STL" />
+          <mesh filename="${mesh_path}/front_castor_body_link.STL" />
         </geometry>
       </collision>
     </link>
@@ -200,7 +202,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/front_castor_wheel_link.STL" />
+          <mesh filename="${mesh_path}/front_castor_wheel_link.STL" />
         </geometry>
         <material name="">
           <color rgba="0.6 0.6 0.6 1" />
@@ -209,7 +211,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/front_castor_wheel_link.STL" />
+          <mesh filename="${mesh_path}/front_castor_wheel_link.STL" />
         </geometry>
       </collision>
     </link>
@@ -238,7 +240,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/back_castor_body_link.STL" />
+          <mesh filename="${mesh_path}/back_castor_body_link.STL" />
         </geometry>
         <material name="">
           <color rgba="0.4 0.4 0.4 1" />
@@ -247,7 +249,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/back_castor_body_link.STL" />
+          <mesh filename="${mesh_path}/back_castor_body_link.STL" />
         </geometry>
       </collision>
     </link>
@@ -275,7 +277,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/back_castor_wheel_link.STL" />
+          <mesh filename="${mesh_path}/back_castor_wheel_link.STL" />
         </geometry>
         <material name="">
           <color rgba="0.6 0.6 0.6 1" />
@@ -284,7 +286,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://robot_description/meshes/back_castor_wheel_link.STL" />
+          <mesh filename="${mesh_path}/back_castor_wheel_link.STL" />
         </geometry>
       </collision>
     </link>
@@ -296,6 +298,76 @@
       <axis xyz="0 1 0" />
       <limit lower="0" upper="0" effort="0" velocity="0" />
     </joint>
+
+    <!-- ==================== GAZEBO PLUGINS ==================== -->
+
+    <!-- Differential Drive Plugin -->
+    <gazebo>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>${prefix}left_wheel_joint</left_joint>
+        <right_joint>${prefix}right_wheel_joint</right_joint>
+        <wheel_separation>0.5897</wheel_separation>
+        <wheel_radius>0.10</wheel_radius>
+        <max_wheel_torque>20.0</max_wheel_torque>
+        <max_wheel_acceleration>1.0</max_wheel_acceleration>
+        <odom_publish_frequency>50</odom_publish_frequency>
+        <topic>cmd_vel</topic>
+        <odom_topic>odom</odom_topic>
+        <tf_topic>tf</tf_topic>
+        <frame_id>odom</frame_id>
+        <child_frame_id>${prefix}base_link</child_frame_id>
+      </plugin>
+    </gazebo>
+
+    <!-- Joint State Publisher Plugin -->
+    <gazebo>
+      <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+        <joint_name>${prefix}left_wheel_joint</joint_name>
+        <joint_name>${prefix}right_wheel_joint</joint_name>
+        <joint_name>${prefix}front_castor_body_joint</joint_name>
+        <joint_name>${prefix}front_castor_wheel_joint</joint_name>
+        <joint_name>${prefix}back_castor_body_joint</joint_name>
+        <joint_name>${prefix}back_castor_wheel_joint</joint_name>
+        <topic>joint_states</topic>
+      </plugin>
+    </gazebo>
+
+    <!-- GPU Lidar Sensor -->
+    <gazebo reference="${prefix}lidar_link">
+      <sensor name="gpu_lidar" type="gpu_lidar">
+        <pose>0 0 0 0 0 0</pose>
+        <topic>scan</topic>
+        <update_rate>10</update_rate>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>1</samples>
+              <resolution>1</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>0</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.1</min>
+            <max>12.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </lidar>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+      </sensor>
+    </gazebo>
 
   </xacro:macro>
 </robot>
