@@ -223,7 +223,7 @@ class ScanMatcher:
         self.prev_points = current_points
         
         # Return negative transform (current to previous)
-        return -dx, -dy, -dtheta, fitness, success
+        return dx, dy, dtheta, fitness, success
     
     def reset(self):
         """Reset the scan matcher state."""
