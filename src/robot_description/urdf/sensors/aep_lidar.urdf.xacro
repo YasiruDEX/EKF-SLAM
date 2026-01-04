@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="aep_lidar" params="prefix:=">
+    <link name="${prefix}lidar_link">
+      <inertial>
+        <origin xyz="-9.1926E-05 -0.0067665 -0.0073819" rpy="0 0 0" />
+        <mass value="1.3308" />
+        <inertia ixx="0.0009607" ixy="8.0198E-07" ixz="-3.0916E-06" iyy="0.00061492" iyz="-0.00015824" izz="0.0010982" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/lidar_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.2 0.7 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/lidar_link.STL" />
+        </geometry>
+      </collision>
+      <gazebo reference="${prefix}lidar_link">
+        <sensor name="lidar" type="lidar">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <visualize>true</visualize>
+          <update_rate>10</update_rate>
+          <topic>/scan</topic>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>360</samples>
+                <resolution>1.0</resolution>
+                <min_angle>-3.14159</min_angle>
+                <max_angle>3.14159</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.12</min>
+              <max>12.0</max>
+              <resolution>0.01</resolution>
+            </range>
+            <noise>
+              <type>gaussian</type>
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+            </noise>
+          </ray>
+        </sensor>
+      </gazebo>
+    </link>
+
+    <joint name="${prefix}lidar_joint" type="fixed">
+      <origin xyz="0 0.000420393431200835 0.32565" rpy="0 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}lidar_link" />
+      <axis xyz="0 0 0" />
+    </joint>
+  </xacro:macro>
+</robot>

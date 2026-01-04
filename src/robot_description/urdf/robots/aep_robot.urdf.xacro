@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="AEP_Robot">
+  <xacro:include filename="$(find robot_description)/urdf/mech/aep_base.urdf.xacro"/>
+  <xacro:include filename="$(find robot_description)/urdf/mech/aep_wheels.urdf.xacro"/>
+  <xacro:include filename="$(find robot_description)/urdf/mech/aep_casters.urdf.xacro"/>
+  <xacro:include filename="$(find robot_description)/urdf/sensors/aep_lidar.urdf.xacro"/>
+  <xacro:include filename="$(find robot_description)/urdf/sensors/aep_imu.urdf.xacro"/>
+  <xacro:include filename="$(find robot_description)/urdf/control/aep_gazebo_plugins.urdf.xacro"/>
+
+  <xacro:macro name="AEP_Robot" params="prefix:=">
+    <xacro:aep_base prefix="${prefix}"/>
+    <xacro:aep_wheels prefix="${prefix}"/>
+    <xacro:aep_casters prefix="${prefix}"/>
+    <xacro:aep_lidar prefix="${prefix}"/>
+    <xacro:aep_imu prefix="${prefix}"/>
+    <xacro:aep_gazebo_plugins prefix="${prefix}"/>
+  </xacro:macro>
+</robot>

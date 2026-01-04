@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="aep_wheels" params="prefix:=">
+    <link name="${prefix}left_wheel_link">
+      <inertial>
+        <origin xyz="8.211E-08 -0.017522 -4.1793E-07" rpy="0 0 0" />
+        <mass value="0.583" />
+        <inertia ixx="0.00092026" ixy="2.1255E-10" ixz="8.2654E-07" iyy="0.0017198" iyz="-1.099E-09" izz="0.00091447" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/left_wheel_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.7 0.1 0.8 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0" />
+        <geometry>
+          <cylinder radius="0.1" length="0.05" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}left_wheel_joint" type="continuous">
+      <origin xyz="0 0.29485 -0.025" rpy="0 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}left_wheel_link" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <link name="${prefix}right_wheel_link">
+      <inertial>
+        <origin xyz="3.8174E-07 0.017522 1.8833E-07" rpy="0 0 0" />
+        <mass value="0.583" />
+        <inertia ixx="0.00091579" ixy="-1.3235E-09" ixz="-2.5693E-06" iyy="0.0017198" iyz="-7.3676E-10" izz="0.00091893" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/right_wheel_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.7 0.1 0.8 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0" />
+        <geometry>
+          <cylinder radius="0.1" length="0.05" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}right_wheel_joint" type="continuous">
+      <origin xyz="0 -0.29485 -0.025" rpy="0 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}right_wheel_link" />
+      <axis xyz="0 1 0" />
+    </joint>
+  </xacro:macro>
+</robot>

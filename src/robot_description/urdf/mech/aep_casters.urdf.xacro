@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="aep_casters" params="prefix:=">
+    <link name="${prefix}front_castor_body_link">
+      <inertial>
+        <origin xyz="0.0055133 0.00033058 -0.0066169" rpy="0 0 0" />
+        <mass value="0.011291" />
+        <inertia ixx="4.0603E-06" ixy="1.367E-08" ixz="8.6782E-07" iyy="3.8335E-06" iyz="5.2075E-08" izz="4.4634E-06" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/front_castor_body_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.4 0.4 0.4 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/front_castor_body_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}front_castor_body_joint" type="continuous">
+      <origin xyz="0.105 0 -0.0415" rpy="0 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}front_castor_body_link" />
+      <axis xyz="0 0 1" />
+    </joint>
+
+    <link name="${prefix}front_castor_wheel_link">
+      <inertial>
+        <origin xyz="0.001327 -0.02196 3.518E-06" rpy="0 0 0" />
+        <mass value="0.047259" />
+        <inertia ixx="9.5221E-06" ixy="-2.7895E-07" ixz="2.5434E-09" iyy="1.4162E-05" iyz="1.5234E-10" izz="9.4977E-06" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/front_castor_wheel_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.6 0.6 0.6 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/front_castor_wheel_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}front_castor_wheel_joint" type="continuous">
+      <origin xyz="0.021643 0.023336 -0.033" rpy="0 0 0" />
+      <parent link="${prefix}front_castor_body_link" />
+      <child link="${prefix}front_castor_wheel_link" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <link name="${prefix}back_castor_body_link">
+      <inertial>
+        <origin xyz="-0.0055142 -0.00031498 -0.0066169" rpy="0 0 0" />
+        <mass value="0.011291" />
+        <inertia ixx="4.0603E-06" ixy="1.3028E-08" ixz="-8.6797E-07" iyy="3.8334E-06" iyz="-4.9618E-08" izz="4.4634E-06" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/back_castor_body_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.4 0.4 0.4 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/back_castor_body_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}back_castor_body_joint" type="continuous">
+      <origin xyz="-0.105 0 -0.0415" rpy="0 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}back_castor_body_link" />
+      <axis xyz="0 0 1" />
+    </joint>
+
+    <link name="${prefix}back_castor_wheel_link">
+      <inertial>
+        <origin xyz="0.001265 -0.021964 -2.6984E-06" rpy="0 0 0" />
+        <mass value="0.047259" />
+        <inertia ixx="9.5208E-06" ixy="-2.6579E-07" ixz="-1.9877E-09" iyy="1.4164E-05" iyz="-1.1341E-10" izz="9.4974E-06" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/back_castor_wheel_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.6 0.6 0.6 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robot_description/meshes/back_castor_wheel_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}back_castor_wheel_joint" type="continuous">
+      <origin xyz="-0.024216 0.020654 -0.033" rpy="0 0 0" />
+      <parent link="${prefix}back_castor_body_link" />
+      <child link="${prefix}back_castor_wheel_link" />
+      <axis xyz="0 1 0" />
+    </joint>
+  </xacro:macro>
+</robot>
