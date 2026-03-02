@@ -88,18 +88,18 @@ controller_server:
       debug_trajectory_details: true
       min_vel_x: 0.0
       min_vel_y: 0.0
-      max_vel_x: 0.3
+      max_vel_x: 0.15
       max_vel_y: 0.0
-      max_vel_theta: 1.0
+      max_vel_theta: 0.6
       min_speed_xy: 0.0
-      max_speed_xy: 0.3
+      max_speed_xy: 0.15
       min_speed_theta: 0.0
-      acc_lim_x: 2.5
+      acc_lim_x: 1.2
       acc_lim_y: 0.0
-      acc_lim_theta: 3.2
-      decel_lim_x: -2.5
+      acc_lim_theta: 1.8
+      decel_lim_x: -1.2
       decel_lim_y: 0.0
-      decel_lim_theta: -3.2
+      decel_lim_theta: -1.8
       vx_samples: 20
       vy_samples: 5
       vtheta_samples: 20
@@ -244,9 +244,9 @@ behavior_server:
     robot_base_frame: base_link
     transform_tolerance: 0.1
     simulate_ahead_time: 2.0
-    max_rotational_vel: 1.0
-    min_rotational_vel: 0.4
-    rotational_acc_lim: 3.2
+    max_rotational_vel: 0.6
+    min_rotational_vel: 0.2
+    rotational_acc_lim: 1.8
 
 waypoint_follower:
   ros__parameters:
@@ -266,10 +266,10 @@ velocity_smoother:
     smoothing_frequency: 20.0
     scale_velocities: false
     feedback: "OPEN_LOOP"
-    max_velocity: [0.3, 0.0, 1.0]
-    min_velocity: [-0.3, 0.0, -1.0]
-    max_accel: [2.5, 0.0, 3.2]
-    max_decel: [-2.5, 0.0, -3.2]
+    max_velocity: [0.15, 0.0, 0.6]
+    min_velocity: [-0.15, 0.0, -0.6]
+    max_accel: [1.2, 0.0, 1.8]
+    max_decel: [-1.2, 0.0, -1.8]
     odom_topic: "odom"
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]

@@ -299,54 +299,47 @@
       <limit lower="0" upper="0" effort="0" velocity="0" />
     </joint>
 
-    <!-- ==================== GAZEBO PLUGINS ==================== -->
+    <!-- ==================== GAZEBO CLASSIC PLUGINS ==================== -->
 
     <!-- Differential Drive Plugin -->
     <gazebo>
-      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+      <plugin name="gazebo_ros_diff_drive" filename="libgazebo_ros_diff_drive.so">
+        <update_rate>50</update_rate>
         <left_joint>${prefix}left_wheel_joint</left_joint>
         <right_joint>${prefix}right_wheel_joint</right_joint>
         <wheel_separation>0.5897</wheel_separation>
-        <wheel_radius>0.075</wheel_radius>
+        <wheel_diameter>0.15</wheel_diameter>
         <max_wheel_torque>20.0</max_wheel_torque>
         <max_wheel_acceleration>1.0</max_wheel_acceleration>
-        <odom_publish_frequency>50</odom_publish_frequency>
-        <topic>cmd_vel</topic>
-        <odom_topic>odom</odom_topic>
-        <tf_topic>tf</tf_topic>
-        <frame_id>odom</frame_id>
-        <child_frame_id>${prefix}base_link</child_frame_id>
-      </plugin>
-    </gazebo>
-
-    <!-- Sensors System Plugin (required for GPU lidar) -->
-    <gazebo>
-      <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
-        <render_engine>ogre2</render_engine>
+        <command_topic>cmd_vel</command_topic>
+        <odometry_topic>odom</odometry_topic>
+        <odometry_frame>odom</odometry_frame>
+        <robot_base_frame>${prefix}base_link</robot_base_frame>
+        <publish_odom>true</publish_odom>
+        <publish_odom_tf>true</publish_odom_tf>
+        <publish_wheel_tf>false</publish_wheel_tf>
       </plugin>
     </gazebo>
 
     <!-- Joint State Publisher Plugin -->
     <gazebo>
-      <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <plugin name="gazebo_ros_joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+        <update_rate>50</update_rate>
         <joint_name>${prefix}left_wheel_joint</joint_name>
         <joint_name>${prefix}right_wheel_joint</joint_name>
         <joint_name>${prefix}front_castor_body_joint</joint_name>
         <joint_name>${prefix}front_castor_wheel_joint</joint_name>
         <joint_name>${prefix}back_castor_body_joint</joint_name>
         <joint_name>${prefix}back_castor_wheel_joint</joint_name>
-        <topic>joint_states</topic>
       </plugin>
     </gazebo>
 
-    <!-- GPU Lidar Sensor -->
+    <!-- Lidar Sensor -->
     <gazebo reference="${prefix}lidar_link">
-      <sensor name="gpu_lidar" type="gpu_lidar">
+      <sensor name="lidar_sensor" type="ray">
         <pose>0 0 0 0 0 0</pose>
-        <topic>scan</topic>
         <update_rate>10</update_rate>
-        <gz_frame_id>${prefix}lidar_link</gz_frame_id>
-        <lidar>
+        <ray>
           <scan>
             <horizontal>
               <samples>360</samples>
@@ -371,9 +364,16 @@
             <mean>0.0</mean>
             <stddev>0.01</stddev>
           </noise>
-        </lidar>
+        </ray>
         <always_on>true</always_on>
         <visualize>true</visualize>
+        <plugin name="gazebo_ros_laser" filename="libgazebo_ros_ray_sensor.so">
+          <ros>
+            <remapping>~/out:=scan</remapping>
+          </ros>
+          <output_type>sensor_msgs/LaserScan</output_type>
+          <frame_name>${prefix}lidar_link</frame_name>
+        </plugin>
       </sensor>
     </gazebo>
 

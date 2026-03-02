@@ -7,9 +7,6 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(ros_gz_sim REQUIRED)
-find_package(ros_gz_bridge REQUIRED)
-find_package(robot_description REQUIRED)
 
 install(
   DIRECTORY worlds

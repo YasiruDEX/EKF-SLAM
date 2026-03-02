@@ -24,7 +24,7 @@ def generate_launch_description():
 
     desc_share = get_package_share_directory('robot_description')
     sim_share = get_package_share_directory('robot_sim')
-    ros_gz_sim_share = get_package_share_directory('ros_gz_sim')
+    gazebo_ros_share = get_package_share_directory('gazebo_ros')
 
     
     urdf_xacro_path = os.path.join(
@@ -69,26 +69,25 @@ def generate_launch_description():
         ]
     )
 
-    # Gazebo
+    # Gazebo Classic
 
-    gz_server = IncludeLaunchDescription(
+    gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(ros_gz_sim_share, 'launch', 'gz_sim.launch.py')
+            os.path.join(gazebo_ros_share, 'launch', 'gazebo.launch.py')
         ),
         launch_arguments={
-            'gz_args': ['-r ', world_path]
+            'world': world_path
         }.items()
     )
 
     spawn_robot_node = Node(
-        package='ros_gz_sim',
-        executable='create',
+        package='gazebo_ros',
+        executable='spawn_entity.py',
         name='spawn_AEP_Robot',
         output='screen',
         arguments=[
-            '-world', 'classroom_world',
             '-file', urdf_path,
-            '-name', 'AEP_Robot',
+            '-entity', 'AEP_Robot',
             '-x', '2.0',
             '-y', '-3.0',
             '-z', '0.1',
@@ -98,7 +97,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         use_sim_time_arg,
-        gz_server,
+        gazebo,
         robot_state_publisher_node,
         static_tf_node,
         spawn_robot_node,
