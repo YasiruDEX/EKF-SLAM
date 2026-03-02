@@ -26,27 +26,20 @@ def generate_launch_description():
     )
 
     # --- Paths ---
-    desc_share = get_package_share_directory('robot_description')
+    turtlebot3_desc_share = get_package_share_directory('turtlebot3_description')
     sim_share = get_package_share_directory('robot_sim')
     slam_share = get_package_share_directory('robot_slam')
     ros_gz_sim_share = get_package_share_directory('ros_gz_sim')
+    desc_share = get_package_share_directory('robot_description')  # For RViz config
 
-    urdf_xacro_path = os.path.join(desc_share, 'urdf', 'main.urdf.xacro')
+    urdf_file = os.path.join(desc_share, 'urdf', 'turtlebot3_waffle_gz.urdf.xacro')
     world_path = PathJoinSubstitution([sim_share, 'worlds', LaunchConfiguration('world')])
     rviz_config = os.path.join(desc_share, 'config', 'rviz', 'nav.rviz')
-    # slam_params_file = os.path.join(slam_share, 'config', 'ekf_slam_params.yaml') # DEPRECATED
-
-    # --- SLAM Toolbox ---
-    slam_toolbox_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('robot_slam_toolbox'), 'launch', 'online_async_launch.py')
-        ),
-        launch_arguments={'use_sim_time': 'true'}.items()
-    )
-
+    slam_params_file = os.path.join(slam_share, 'config', 'ekf_slam_params.yaml')
 
     # --- Set Gazebo resource path for mesh loading ---
-    gz_resource_path = os.path.dirname(desc_share)
+    turtlebot3_gazebo_share = get_package_share_directory('turtlebot3_gazebo')
+    gz_resource_path = os.path.dirname(turtlebot3_desc_share)
     
     existing_gz_path = os.environ.get('GZ_SIM_RESOURCE_PATH', '')
     if existing_gz_path:
@@ -57,9 +50,15 @@ def generate_launch_description():
         value=gz_resource_path
     )
 
-    # --- Robot Description from XACRO ---
+    # Set TURTLEBOT3_MODEL environment variable
+    set_turtlebot3_model = SetEnvironmentVariable(
+        name='TURTLEBOT3_MODEL',
+        value='waffle'
+    )
+
+    # --- Robot Description from URDF (processed with xacro, namespace='') ---
     robot_description = ParameterValue(
-        Command(['xacro ', urdf_xacro_path]),
+        Command(['xacro ', urdf_file, ' namespace:=', '']),
         value_type=str,
     )
 
@@ -71,25 +70,9 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'use_sim_time': use_sim_time,
-            'robot_description': robot_description,
+            'robot_description': robot_description
         }]
     )
-
-    # --- Static TF: base_footprint -> base_link ---
-    static_tf_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='tf_basefootprint_baselink',
-        arguments=[
-            '--x', '0', '--y', '0', '--z', '0',
-            '--roll', '0', '--pitch', '0', '--yaw', '0',
-            '--frame-id', 'base_footprint',
-            '--child-frame-id', 'base_link'
-        ],
-        parameters=[{'use_sim_time': use_sim_time}]
-    )
-
-
 
     # --- Gazebo Simulation ---
     gz_server = IncludeLaunchDescription(
@@ -101,18 +84,18 @@ def generate_launch_description():
         }.items()
     )
 
-    # --- Spawn Robot in Gazebo (center of classroom) ---
+    # --- Spawn TurtleBot3 in Gazebo ---
     spawn_robot_node = Node(
         package='ros_gz_sim',
         executable='create',
-        name='spawn_AEP_Robot',
+        name='spawn_turtlebot3',
         output='screen',
         arguments=[
             '-topic', 'robot_description',
-            '-name', 'AEP_Robot',
+            '-name', 'turtlebot3_waffle',
             '-x', '0.0',
             '-y', '0.0',
-            '-z', '0.15',
+            '-z', '0.01',
             '-Y', '0.0',
         ]
     )
@@ -130,21 +113,24 @@ def generate_launch_description():
             '/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
             '/joint_states@sensor_msgs/msg/JointState@gz.msgs.Model',
             '/clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock',
+            '/imu@sensor_msgs/msg/Imu@gz.msgs.IMU',
+            '/world/complex_cylinder_world/dynamic_pose/info@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
         ],
         parameters=[{'use_sim_time': use_sim_time}]
     )
 
-    # --- Custom EKF-SLAM Node (DISABLED) ---
-    # ekf_slam_node = Node(
-    #     package='robot_slam',
-    #     executable='ekf_slam_node.py',
-    #     name='ekf_slam_node',
-    #     output='screen',
-    #     parameters=[
-    #         slam_params_file,
-    #         {'use_sim_time': use_sim_time}
-    #     ],
-    # )
+    # --- SLAM Toolbox ---
+    robot_slam_toolbox_share = get_package_share_directory('robot_slam_toolbox')
+    
+    slam_toolbox_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+             os.path.join(robot_slam_toolbox_share, 'launch', 'online_async_launch.py')
+        ),
+        launch_arguments={
+            'use_sim_time': use_sim_time,
+            'slam_params_file': os.path.join(robot_slam_toolbox_share, 'config', 'mapper_params_online_async.yaml')
+        }.items()
+    )
 
     # --- RViz2 ---
     rviz_node = Node(
@@ -160,12 +146,11 @@ def generate_launch_description():
         use_sim_time_arg,
         world_arg,
         set_gz_resource_path,
+        set_turtlebot3_model,
         gz_server,
         robot_state_publisher_node,
-        static_tf_node,
         spawn_robot_node,
         bridge_node,
-        slam_toolbox_launch,
-        # ekf_slam_node,
+        slam_toolbox_launch, # Replaces ekf_slam_node
         rviz_node,
     ])

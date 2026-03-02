@@ -223,6 +223,10 @@ class EKFSlamNode(Node):
     
     def scan_callback(self, msg: LaserScan):
         """Process laser scan for mapping and optional scan matching."""
+        # Debug logging for scan timestamp
+        # scan_time = Time.from_msg(msg.header.stamp).nanoseconds / 1e9
+        # self.get_logger().info(f'Scan received at time: {scan_time:.3f}')
+
         if not self.initialized:
             return
         

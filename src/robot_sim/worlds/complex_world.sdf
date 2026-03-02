@@ -1,0 +1,309 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="complex_cylinder_world">
+    <!-- Physics -->
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    
+    <!-- Plugins -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"/>
+    
+    <!-- Lighting -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    
+    <!-- Ground Plane -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <!-- Outer Walls (20m x 20m) -->
+    <model name="outer_walls">
+      <static>true</static>
+      <link name="link">
+        <visual name="wall_n">
+          <pose>0 10 1.0 0 0 0</pose>
+          <geometry><box><size>20 0.2 2</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material>
+        </visual>
+        <collision name="wall_n">
+          <pose>0 10 1.0 0 0 0</pose>
+          <geometry><box><size>20 0.2 2</size></box></geometry>
+        </collision>
+        
+        <visual name="wall_s">
+          <pose>0 -10 1.0 0 0 0</pose>
+          <geometry><box><size>20 0.2 2</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material>
+        </visual>
+        <collision name="wall_s">
+          <pose>0 -10 1.0 0 0 0</pose>
+          <geometry><box><size>20 0.2 2</size></box></geometry>
+        </collision>
+        
+        <visual name="wall_e">
+          <pose>10 0 1.0 0 0 0</pose>
+          <geometry><box><size>0.2 20 2</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material>
+        </visual>
+        <collision name="wall_e">
+          <pose>10 0 1.0 0 0 0</pose>
+          <geometry><box><size>0.2 20 2</size></box></geometry>
+        </collision>
+        
+        <visual name="wall_w">
+          <pose>-10 0 1.0 0 0 0</pose>
+          <geometry><box><size>0.2 20 2</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material>
+        </visual>
+        <collision name="wall_w">
+          <pose>-10 0 1.0 0 0 0</pose>
+          <geometry><box><size>0.2 20 2</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    
+    <!-- Cylinder Obstacles -->
+    <!-- Creating a scattered field of cylinders -->
+    
+    <model name="cylinder_1">
+      <static>true</static>
+      <pose>3 3 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.4</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.3 0.3 0.8 1</ambient><diffuse>0.3 0.3 0.8 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.4</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_2">
+      <static>true</static>
+      <pose>-3 3 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.4</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.8 0.3 0.3 1</ambient><diffuse>0.8 0.3 0.3 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.4</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_3">
+      <static>true</static>
+      <pose>3 -3 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.4</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.3 0.8 0.3 1</ambient><diffuse>0.3 0.8 0.3 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.4</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_4">
+      <static>true</static>
+      <pose>-3 -3 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.4</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.8 0.8 0.3 1</ambient><diffuse>0.8 0.8 0.3 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.4</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_5">
+      <static>true</static>
+      <pose>6 0 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_6">
+      <static>true</static>
+      <pose>-6 0 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_7">
+      <static>true</static>
+      <pose>0 6 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_8">
+      <static>true</static>
+      <pose>0 -6 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_9">
+      <static>true</static>
+      <pose>5 5 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.5 0.2 0.5 1</ambient><diffuse>0.5 0.2 0.5 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+    
+    <model name="cylinder_10">
+      <static>true</static>
+      <pose>-5 -5 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.5 0.2 0.5 1</ambient><diffuse>0.5 0.2 0.5 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+    
+    <model name="cylinder_11">
+      <static>true</static>
+      <pose>5 -5 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.5 0.2 0.5 1</ambient><diffuse>0.5 0.2 0.5 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_12">
+      <static>true</static>
+      <pose>-5 5 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.5 0.2 0.5 1</ambient><diffuse>0.5 0.2 0.5 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_13">
+      <static>true</static>
+      <pose>8 2 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.6 0.6 0.2 1</ambient><diffuse>0.6 0.6 0.2 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_14">
+      <static>true</static>
+      <pose>-8 2 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.6 0.6 0.2 1</ambient><diffuse>0.6 0.6 0.2 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_15">
+      <static>true</static>
+      <pose>2 8 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.6 0.6 0.2 1</ambient><diffuse>0.6 0.6 0.2 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+    
+    <model name="cylinder_16">
+      <static>true</static>
+      <pose>-2 8 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.6 0.6 0.2 1</ambient><diffuse>0.6 0.6 0.2 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_17">
+      <static>true</static>
+      <pose>4 0 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.2</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.2 0.6 0.6 1</ambient><diffuse>0.2 0.6 0.6 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.2</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_18">
+      <static>true</static>
+      <pose>-4 0 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.2</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.2 0.6 0.6 1</ambient><diffuse>0.2 0.6 0.6 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.2</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_19">
+      <static>true</static>
+      <pose>0 4 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.2</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.2 0.6 0.6 1</ambient><diffuse>0.2 0.6 0.6 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.2</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+    <model name="cylinder_20">
+      <static>true</static>
+      <pose>0 -4 1 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><cylinder><radius>0.2</radius><length>2</length></cylinder></geometry>
+        <material><ambient>0.2 0.6 0.6 1</ambient><diffuse>0.2 0.6 0.6 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>0.2</radius><length>2</length></cylinder></geometry></collision>
+      </link>
+    </model>
+
+  </world>
+</sdf>
