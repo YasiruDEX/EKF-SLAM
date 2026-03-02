@@ -9,18 +9,20 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>rclpy</depend>
   <depend>robot_description</depend>
   <depend>robot_sim</depend>
   <depend>robot_nav</depend>
   <depend>robot_slam</depend>
-  <depend>ros_gz_bridge</depend>
+  <depend>robot_localization</depend>
+  <depend>nav2_bringup</depend>
   <depend>slam_toolbox</depend>
   <depend>rviz2</depend>
   <depend>tf2_ros</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
-  <depend>sensor_msgs</depend>
+  <depend>ros_gz_sim</depend>
+  <depend>ros_gz_bridge</depend>
+  <depend>xacro</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

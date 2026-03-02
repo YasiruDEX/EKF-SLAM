@@ -12,7 +12,7 @@ find_package(ros_gz_bridge REQUIRED)
 find_package(robot_description REQUIRED)
 
 install(
-  DIRECTORY worlds launch
+  DIRECTORY worlds
   DESTINATION share/${PROJECT_NAME}
 )
 
