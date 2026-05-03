@@ -1,0 +1,6 @@
+# Absolute target heading in degrees (map frame yaw).
+float32 heading_deg
+---
+bool success
+string message
+geometry_msgs/PoseStamped goal_pose
